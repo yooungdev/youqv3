@@ -11,4 +11,15 @@ module.exports = {
     APP_URL: process.env.APP_URL,
     WS_URL: process.env.WS_URL,
   },
+  reactStrictMode: true,
+  swcMinify: true,
+  images: { domains: ['avatars.githubusercontent.com','s3.timeweb.com', 'sun1.userapi.com'] },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"]
+    });
+
+    return config;
+  }
 };

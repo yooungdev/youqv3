@@ -1,56 +1,40 @@
-import NextAuth from 'next-auth';
-import { AppProviders } from 'next-auth/providers';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import GithubProvider from 'next-auth/providers/github';
+import NextAuth, { type NextAuthOptions, type Session } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
 
-let useMockProvider = process.env.NODE_ENV === 'test';
-const { GITHUB_CLIENT_ID, GITHUB_SECRET, NODE_ENV, APP_ENV } = process.env;
-if (
-  (NODE_ENV !== 'production' || APP_ENV === 'test') &&
-  (!GITHUB_CLIENT_ID || !GITHUB_SECRET)
-) {
-  console.log('⚠️ Using mocked GitHub auth correct credentials were not added');
-  useMockProvider = true;
-}
-const providers: AppProviders = [];
-if (useMockProvider) {
-  providers.push(
-    CredentialsProvider({
-      id: 'github',
-      name: 'Mocked GitHub',
-      async authorize(credentials) {
-        const user = {
-          id: credentials?.name,
-          name: credentials?.name,
-          email: credentials?.name,
-        };
-        return user;
-      },
-      credentials: {
-        name: { type: 'test' },
-      },
-    }),
-  );
-} else {
-  if (!GITHUB_CLIENT_ID || !GITHUB_SECRET) {
-    throw new Error('GITHUB_CLIENT_ID and GITHUB_SECRET must be set');
-  }
-  providers.push(
-    GithubProvider({
-      clientId: GITHUB_CLIENT_ID,
-      clientSecret: GITHUB_SECRET,
-      profile(profile) {
-        return {
-          id: profile.id,
-          name: profile.login,
-          email: profile.email,
-          image: profile.avatar_url,
-        } as any;
-      },
-    }),
-  );
-}
-export default NextAuth({
+
+// Prisma adapter for NextAuth, optional and can be removed
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+import Vk from "./Vk";
+
+const prisma = new PrismaClient();
+
+
+export const authOptions: NextAuthOptions = {
+  // Include user.id on session
+  callbacks: {
+    session({ session, user }: any) {
+      if (session.user) {
+        session.user.id = user.id;
+        session.user.isAdmin = user.isAdmin;
+        session.user.level = user.level;
+        session.user.isConfirmed = user.isConfirmed
+      }
+      return session;
+    },
+  },
   // Configure one or more authentication providers
-  providers,
-});
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GithubProvider({
+      clientId: "71368b02fd7a5d4f93a2",
+      clientSecret: "79f8294473e6e2174b0ba906517c06565efb21b7",
+    }),
+    Vk({
+      // clientId: "51413829",
+      // clientSecret: "Sztiylvk9qWTMn8wwB4S",
+    }),
+  ],
+};
+
+export default NextAuth(authOptions);
