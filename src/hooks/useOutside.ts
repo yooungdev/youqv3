@@ -7,7 +7,7 @@ const useOutside = (onClose: (bol: boolean) => void) => {
     const ref = useRef(null)
 
     const handleClickOutside = (event: any) => {
-        if (ref.current && !ref.current.contains(event.target.event)) {
+        if (ref.current && !ref.current.contains(event.target)) {
             onClose(false)
         }
     }

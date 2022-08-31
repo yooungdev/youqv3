@@ -42,9 +42,6 @@ const QuestionQ = ({ question }: QuestionQProps) => {
             </div>
           </div>
         </div>
-        {/* <span className="text-[16px] font-semibold text-[#636777] py-[4px] px-[8px] leading-none  rounded-[8px] bg-[#ebebeb]">
-                    0
-                </span > */}
         <div className="text-[18px] font-bold font-nunito text-[#636777] p-[8px] flex items-center justify-center rounded-[8px] bg-[#ebebeb]">
           <span className="leading-none">{question?.rating}</span>
         </div>

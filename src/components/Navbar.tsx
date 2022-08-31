@@ -35,6 +35,7 @@ const Navbar = ({ }: any) => {
 
         }
     }
+    
 
     const { ref } = useOutside(setIsDropdownUser)
 
@@ -51,7 +52,7 @@ const Navbar = ({ }: any) => {
             {status === 'authenticated' ? (
                 <div ref={ref} className="relative hidden sm:block">
                     <div
-                        onClick={handleSignOut}
+                        onClick={() => setIsDropdownUser(prev => !prev)}
                         style={{
                             backgroundColor: isDropdownUser ? '#DEEBFF' : undefined
                         }}
@@ -84,6 +85,14 @@ const Navbar = ({ }: any) => {
                                     Мой профиль
                                 </span>
                             </Button>
+                            <Button
+                                onClick={handleSignOut}
+                                className="flex items-center rounded-[10px] py-[7px] px-[14px] bg-none outline-none border-none cursor-pointer text-[#232323] text-[16px] font-montserrat font-semibold hover:bg-[#F3F4FF]"
+                            >
+                                <span className="ml-[10px]">
+                                    Выход
+                                </span>
+                            </Button>
                         </div>
                     </DropdownUser>
                 </div>
@@ -111,7 +120,9 @@ const DropdownUser = ({
     className
 }: DropdownUserProps) => {
     return (
-        <div className={`${className} ${isShow ? 'block' : 'hidden'} absolute top-[60px] right-0 shadow-dropdown rounded-[8px] min-w-[220px] h-auto p-[8px] bg-white`}>
+        <div style={{
+            display: isShow ? 'block' : 'none'
+        }} className={`${className} absolute top-[60px] right-0 shadow-dropdown rounded-[8px] min-w-[220px] h-auto p-[8px] bg-white`}>
             {children}
         </div>
     )

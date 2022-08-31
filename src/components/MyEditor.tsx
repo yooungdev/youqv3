@@ -23,7 +23,7 @@ const MyEditor = ({
 }: MyEditorProps) => {
 
 
-  const ref = useRef(null);
+  const ref: any = useRef(null);
 
   return (
     <>
