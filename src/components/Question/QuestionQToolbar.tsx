@@ -20,7 +20,7 @@ import Share from "../../utils/svg/share.svg";
 import LoadingSmall from "../../utils/gift/loading_small.gif";
 
 type QuestionQToolbarProps = {
-  questionId: number | undefined;
+  questionId: number | null | undefined;
 };
 
 type Tab = {
@@ -124,7 +124,7 @@ const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
 };
 
 type EditAnswerProps = {
-  questionId: number | null | undefined;
+  questionId: number | null | undefined | any;
   setActiveTab: any;
 };
 
@@ -173,7 +173,7 @@ const EditAnswer = memo(({ questionId, setActiveTab }: EditAnswerProps) => {
 });
 
 type EditCommentProps = {
-  questionId: number | null | undefined;
+  questionId: number | null | undefined | any;
   setActiveTab: (arg: null) => void;
 };
 

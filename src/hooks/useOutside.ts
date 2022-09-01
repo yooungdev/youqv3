@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react"
 
 
 const useOutside = (onClose: (bol: boolean) => void) => {
-    const ref = useRef(null)
+    const ref: any = useRef(null)
 
     const handleClickOutside = (event: any) => {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (ref.current && !ref.current?.contains(event.target)) {
             onClose(false)
         }
     }

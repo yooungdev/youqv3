@@ -1,4 +1,4 @@
-import NextAuth, { type NextAuthOptions, type Session } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
 
@@ -31,8 +31,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: "79f8294473e6e2174b0ba906517c06565efb21b7",
     }),
     Vk({
-      // clientId: "51413829",
-      // clientSecret: "Sztiylvk9qWTMn8wwB4S",
+      clientId: process.env.VK_ID ?? '',
+      clientSecret: process.env.VK_SECRET ?? '',
     }),
   ],
 };

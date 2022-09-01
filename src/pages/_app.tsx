@@ -14,10 +14,19 @@ import 'moment/locale/ru'
 moment.locale('ru')
 
 import superjson from "superjson";
+import getConfig from 'next/config';
 import { SessionProvider } from "next-auth/react";
 //
-import "../styles/globals.css";
 import AuthWrapper from "components/AuthWrapper";
+//
+import "../styles/globals.css";
+
+
+const { publicRuntimeConfig } = getConfig();
+
+const { APP_URL, WS_URL } = publicRuntimeConfig;
+
+
 
 const MyApp: AppType = ({
   Component,
@@ -35,11 +44,11 @@ const MyApp: AppType = ({
 function getEndingLink() {
   if (typeof window === "undefined") {
     return httpBatchLink({
-      url: `${"http://localhost:3000"}/api/trpc`,
+      url: `${APP_URL}/api/trpc`,
     });
   }
   const client = createWSClient({
-    url: "ws://localhost:3001",
+    url: WS_URL,
   });
   return wsLink<AppRouter>({
     client,

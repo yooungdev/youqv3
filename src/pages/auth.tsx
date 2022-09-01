@@ -15,7 +15,7 @@ const Auth: NextPage = () => {
         }
     }
     return (
-        <PageContainer>
+        <PageContainer title="Авторизовация - youq.org">
             <div className="w-full h-full flex  items-center justify-center">
                 <div className="shadow-standart flex rounded-[10px] w-[700px] p-[12px] sm:p-[20px] bg-white">
                     <div className="w-[50%] hidden sm:flex items-center justify-center flex-col">

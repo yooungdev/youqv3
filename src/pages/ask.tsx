@@ -13,6 +13,7 @@ import PageContainer from "../layouts/PageContainer";
 // util/gift
 import LoadingDefault from "../utils/gift/loading_default.gif";
 import { classesOptions, itemsOptions } from "utils/helping";
+import { useRouter } from "next/router";
 
 const MyEditor = dynamic(() => import("../components/MyEditor"), {
   ssr: false,
@@ -20,7 +21,7 @@ const MyEditor = dynamic(() => import("../components/MyEditor"), {
 
 const Ask: NextPage = () => {
   return (
-    <PageContainer>
+    <PageContainer title="Задать вопрос - youq.org">
       <div className="flex items-center justify-center w-full h-full">
         <div className="w-full">
           <AskQuestion />
@@ -61,7 +62,12 @@ const EditAskQuestion = () => {
 
   const questionMutate = trpc.useMutation([
     "question_protected.create_question",
-  ]);
+  ])
+  
+  const router = useRouter()
+
+  if (questionMutate?.data?.id) router.push(`/question/${questionMutate?.data?.id}`) 
+
 
   const onCreateQuestion = () => {
     try {

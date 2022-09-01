@@ -14,13 +14,13 @@ import NavbarMobile from "../components/NavbarMobile";
 
 type PageContainerProps = {
     children: ReactNode;
-    title?: string;
+    title?: string | undefined;
     description?: string;
 }
 
 const PageContainer: NextPage<PageContainerProps> = ({
     children,
-    title = 'Вопросы и ответы на школьные задачки онлайн - YouQ.org',
+    title = 'Вопросы и ответы на школьные задачки онлайн - youq.org',
     description = 'Решаем домашнее задание вместе'
 }) => {
     return (
@@ -29,7 +29,7 @@ const PageContainer: NextPage<PageContainerProps> = ({
                 <title>{title}</title>
                 <meta name="title" content={title} />
                 <meta name="description" content={description} />
-                <link rel="icon" href="/logo.svg" />
+                <link rel="icon" href="/favicon.svg" />
             </Head>
             <Navbar />
             <div className="py-[70px] px-[10px] h-full max-w-[1200px] m-auto sm:pt-[80px] sm:px-0">

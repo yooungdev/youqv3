@@ -13,7 +13,7 @@ type QuestionQProps = {
 };
 
 const QuestionQ = ({ question }: QuestionQProps) => {
-  const { data, status } = useSession();
+  const { data, status }: any = useSession();
 
   const router = useRouter();
 
@@ -78,11 +78,15 @@ type QuestionQCommentsProps = {
 };
 
 const QuestionQComments = memo(
-  ({ initialComments, questionId }: QuestionQCommentsProps) => {
-    const [comments, setComments] = useState<any>(initialComments ?? []);
+  ({ initialComments, questionId }: QuestionQCommentsProps): any => {
+    const [comments, setComments] = useState<any>(initialComments);
+
+    const input: any = {
+      questionId
+    }
 
     trpc.useSubscription(
-      ["question.onCreateCommentQuestion", { questionId: questionId }],
+      ["question.onCreateCommentQuestion", input],
       {
         onNext: (comment) => {
           setComments((comments: any): any => {

@@ -41,10 +41,9 @@ const Question: NextPage = () => {
     }
   }, [id]);
 
-  console.log(questionMutate);
 
   return (
-    <PageContainer>
+    <PageContainer title={questionMutate?.data?.text ?? undefined}>
       <div className="flex justify-between h-full">
         <div className={`h-full w-[100%] lg:w-[${questionMutate?.status === 'loading' ? 'w-full' : '790px'}]`}>
           {questionMutate?.status === 'loading' && (
@@ -99,8 +98,12 @@ const QuestionAnwers = memo(
   ({ initialAnswers, questionId }: QuestionAnwersProps) => {
     const [answers, setAnswers] = useState(initialAnswers ?? []);
 
+    const input: any = {
+      questionId
+    }
+
     trpc.useSubscription(
-      ["question.onCreateAnswer", { questionId: questionId }],
+      ["question.onCreateAnswer", input],
       {
         onNext: (answer) => {
           setAnswers((answers: any): any => {

@@ -20,7 +20,7 @@ type QuestionAProps = {
 };
 
 const QuestionA = ({ answer }: QuestionAProps) => {
-  const { status } = useSession();
+  const { status }: any = useSession();
 
   const router = useRouter();
 
@@ -85,11 +85,16 @@ const QuestionAComments = memo(
     const [comments, setComments] = useState(initialComments ?? []);
     const [comment, setComment] = useState("");
 
-    const { data, status } = useSession();
+    const { data, status }:any = useSession();
 
     const router = useRouter()
 
-    trpc.useSubscription(["question.onCreateCommentAnswer", { answerId }], {
+  
+    const input: any = {
+      answerId
+    }
+
+    trpc.useSubscription(["question.onCreateCommentAnswer", input], {
       onNext: (comment) => {
         setComments((comments: any): any => {
           if (comment && comments.length > 0) {
@@ -110,8 +115,7 @@ const QuestionAComments = memo(
         try {
           await answerMutate.mutateAsync({
             text: comment,
-            answerId: answerId,
-            authorId: data?.user?.id,
+            answerId: answerId
           });
           setComment("");
         } catch (error) {}

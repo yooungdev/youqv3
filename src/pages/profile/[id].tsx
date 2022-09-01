@@ -35,7 +35,7 @@ const Profile: NextPage = (props) => {
 
 
     return (
-        <PageContainer>
+        <PageContainer title={profileMutate?.data?.name ? `${profileMutate?.data?.name} - youq.org` : undefined}>
             <div className="flex justify-between h-full">
                 <div className="h-full w-[100%] lg:w-[490px]">
                     <div className="max-w-[630px] lg:max-w-[330px] mx-auto h-full">

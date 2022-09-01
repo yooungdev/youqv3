@@ -92,7 +92,9 @@ export const questionRouter = createRouter()
         }
     })
     .subscription('onCreateCommentAnswer', {
-        input: z.any(),
+        input: z.object({
+            answerId: z.number()
+        }),
         async resolve({ ctx, input}) {
             return new trpc.Subscription((emit: any): any => {
                 const onCommentAnswer = (data: any) => {

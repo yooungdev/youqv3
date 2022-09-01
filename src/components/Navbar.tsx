@@ -21,7 +21,7 @@ const Navbar = ({ }: any) => {
     const router = useRouter()
 
     
-    const { data, status } = useSession()
+    const { data, status }: any = useSession()
 
 
     const handleSignIn = () => {

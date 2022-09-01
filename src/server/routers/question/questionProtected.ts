@@ -21,6 +21,8 @@ export const questionRouterProtected = createRouterProtected()
           author: { connect: { id: ctx?.session?.user?.id } }
         }
       })
+
+
       return savedQuestion
     }
   })
@@ -28,7 +30,7 @@ export const questionRouterProtected = createRouterProtected()
     input: z.object({
       text: z.string(),
       textHtml: z.string(),
-      questionId: z.number(),
+      questionId: z.number() || z.null() || z.undefined(),
     }),
     async resolve({ ctx, input }: any) {
       console.log(input);

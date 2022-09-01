@@ -28,7 +28,7 @@ const QuestionsNew = () => {
                 Новые вопросы
             </span>
             <div className="pt-[30px]">
-                {newQuestionsMutate?.data?.map(newQuestion => (
+                {newQuestionsMutate?.data?.map((newQuestion: any): any => (
                     <QuestionNew key={newQuestion.id} newQuestion={newQuestion} />
                 ))}
             </div>
