@@ -5,8 +5,8 @@ import { Editor, EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 // components/UI
 import Button from "./UI/Button";
-//
-import { trpc } from "../utils/trpc";
+
+
 
 type MyEditorProps = {
   placeholder?: string | undefined;

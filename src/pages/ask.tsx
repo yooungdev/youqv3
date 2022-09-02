@@ -5,7 +5,6 @@ import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Select from "react-select";
 import { useState } from "react";
-import { trpc } from "utils/trpc";
 // components/UI
 import Button from "../components/UI/Button";
 // layouts
@@ -14,6 +13,7 @@ import PageContainer from "../layouts/PageContainer";
 import LoadingDefault from "../utils/gift/loading_default.gif";
 import { classesOptions, itemsOptions } from "utils/helping";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 const MyEditor = dynamic(() => import("../components/MyEditor"), {
   ssr: false,
@@ -56,35 +56,40 @@ const EditAskQuestion = () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [createLoadingStatus, setCreateLoadingStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   const [selectedItem, setSelectedItem] = useState(newItemsOptions[0]);
   const [selectedClass, setSelectedClass] = useState(newClassesOptions[0]);
 
-  const questionMutate = trpc.useMutation([
-    "question_protected.create_question",
-  ])
-  
-  const router = useRouter()
+  const router = useRouter();
 
-  if (questionMutate?.data?.id) router.push(`/question/${questionMutate?.data?.id}`) 
-
-
-  const onCreateQuestion = () => {
+  const onCreateQuestion = async () => {
     try {
+      setCreateLoadingStatus('loading')
       const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
       const value = blocks
         .map((block) => (!block.text.trim() && "\n") || block.text)
         .join("\n");
 
-      questionMutate.mutateAsync({
-        text: value,
-        textHtml: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-        item: selectedItem.value,
-        class: selectedClass.value,
-      });
+      const res = await axios.post(
+        "http://localhost:3333/question/createQuestion",
+        {
+          text: value,
+          textHtml: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+          item: selectedItem.value,
+          class: selectedClass.value,
+        }
+      );
+
+      if (res.status === 200) {
+        router.push(`/question/${res.data.id}`)
+        setCreateLoadingStatus('success')
+      }
 
       setEditorState(EditorState.createEmpty());
-    } catch (error) {}
+    } catch (error) {
+      setCreateLoadingStatus('error')
+    }
   };
 
   return (
@@ -113,13 +118,13 @@ const EditAskQuestion = () => {
         </div>
         <div className="flex">
           <Button
-            disabled={questionMutate?.status === "loading"}
+            disabled={createLoadingStatus === "loading"}
             onClick={onCreateQuestion}
             className={`py-[5px] h-[40px] w-[210px] px-[30px] flex items-center justify-center rounded-[15px] font-nunito border-none outline-none bg-[#4971FF] text-white text-[18px] font-bold cursor-${
-              questionMutate?.status === "loading" ? "progress" : "pointer"
-            } ${questionMutate?.status !== "loading" && "hover:bg-[#2851E4]"}`}
+              createLoadingStatus === "loading" ? "progress" : "pointer"
+            } ${createLoadingStatus !== "loading" && "hover:bg-[#2851E4]"}`}
           >
-            {questionMutate?.status === "loading" ? (
+            {createLoadingStatus=== "loading" ? (
               <Image
                 src={LoadingDefault}
                 height={40}

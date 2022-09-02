@@ -1,8 +1,5 @@
 import { memo, useState } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-//
-import { trpc } from "../../utils/trpc";
 // components
 import QuestionQAComment from "./QuestionQAComment";
 import QuestionRating from "./QuestionRating";
@@ -85,30 +82,7 @@ const QuestionAComments = memo(
     const [comments, setComments] = useState(initialComments ?? []);
     const [comment, setComment] = useState("");
 
-    const { data, status }:any = useSession();
-
-    const router = useRouter()
-
-  
-    const input: any = {
-      answerId
-    }
-
-    trpc.useSubscription(["question.onCreateCommentAnswer", input], {
-      onNext: (comment) => {
-        setComments((comments: any): any => {
-          if (comment && comments.length > 0) {
-            return [...comments, comment];
-          }
-
-          return [comment];
-        });
-      },
-    });
-
-    const answerMutate = trpc.useMutation([
-      "question_protected.create_comment_to_answer",
-    ]);
+   
 
     const handleKeyDown = async (e: any) => {
       if (e.key === "Enter" && status === "authenticated") {

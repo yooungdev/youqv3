@@ -6,33 +6,14 @@ import ProfileMenu from "../../components/Profile/ProfileMenu"
 import ProfileMenuElements from "../../components/Profile/ProfileMenuElements"
 // layouts
 import PageContainer from "../../layouts/PageContainer"
-import { trpc } from "../../utils/trpc"
 
 
 
-const Profile: NextPage = (props) => {
+const Profile: NextPage = () => {
     
     const router = useRouter()
 
-    const profileMutate = trpc.useMutation(['profile.getOne'])
-
-    const id: string | undefined = String(router?.query?.id)
-    const input = {
-        id: id
-    }
-    console.log(profileMutate)
-
-    useEffect(() => {
-        if (id) {
-            try {
-                profileMutate.mutate(input)
-            } catch (error) {
-                
-            }
-        }
-    }, [id])
-
-
+const profileMutate: any = undefined
 
     return (
         <PageContainer title={profileMutate?.data?.name ? `${profileMutate?.data?.name} - youq.org` : undefined}>

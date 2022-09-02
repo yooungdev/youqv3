@@ -1,8 +1,9 @@
-import { useSession } from "next-auth/react"
 import { ReactNode } from "react"
+//
 import Image from 'next/image'
 //
 import loading from '../utils/gift/loading.gif'
+
 
 
 
@@ -14,7 +15,7 @@ const AuthWrapper = ({
     children
 }: AuthWrapperProps) => {
 
-    const { status } = useSession()
+    const status = 'err'
 
     if (status === 'loading') {
         return (

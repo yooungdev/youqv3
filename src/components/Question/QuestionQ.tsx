@@ -1,19 +1,20 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useState } from "react";
+//
 import { useRouter } from "next/router";
+//
+import moment from "moment";
 // components
 import QuestionQAComment from "./QuestionQAComment";
 // components/UI
 import Avatar from "../UI/Avatar";
-import moment from "moment";
-import { useSession } from "next-auth/react";
-import { trpc } from "utils/trpc";
+
+
 
 type QuestionQProps = {
   question: any;
 };
 
 const QuestionQ = ({ question }: QuestionQProps) => {
-  const { data, status }: any = useSession();
 
   const router = useRouter();
 
@@ -55,7 +56,7 @@ const QuestionQ = ({ question }: QuestionQProps) => {
           initialComments={question?.comments}
         />
       )}
-      {status !== "authenticated" && (
+      {/* {status !== "authenticated" && (
         <div className="mt-[15px]">
           <p className="text-[#4971FF]  text-[16px] font-medium font-sans">
             <span
@@ -67,7 +68,7 @@ const QuestionQ = ({ question }: QuestionQProps) => {
             - чтобы написать комментарий или дать ответ
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
@@ -81,24 +82,6 @@ const QuestionQComments = memo(
   ({ initialComments, questionId }: QuestionQCommentsProps): any => {
     const [comments, setComments] = useState<any>(initialComments);
 
-    const input: any = {
-      questionId
-    }
-
-    trpc.useSubscription(
-      ["question.onCreateCommentQuestion", input],
-      {
-        onNext: (comment) => {
-          setComments((comments: any): any => {
-            if (comments && comments.length > 0) {
-              return [...comments, comment];
-            }
-
-            return [comment];
-          });
-        },
-      }
-    );
 
     if (comments.length > 0) {
       return (

@@ -1,35 +1,37 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import type { NextPage } from "next";
 // layouts
 import PageContainer from "../layouts/PageContainer";
-// components 
+// components
 import FilterByQuestions from "../components/FilterByQuestions";
 import SearchByQuestions from "../components/SearchByQuestions";
 import QuestionItem from "../components/QuestionItem";
-//
-import { trpc } from "../utils/trpc";
-// type TechnologyCardProps = {
-//   name: string;
-//   description: string;
-//   documentation: string;
-// };
+import axios from "axios";
 
 const Home: NextPage = () => {
-  
-  const questionsMutate = trpc.useMutation(['question.getAll'])
-
+  const [questions, setQuestions] = useState<any>(undefined);
+  const [questionsLoadingStatus, setQuestionLoadingStatus] = useState<
+    "idle" | "success" | "error" | "loading"
+  >("idle");
 
   useEffect(() => {
-    try {
-      questionsMutate.mutate({
-        limit: 10
-      })
-    } catch (error) {
-      
-    }
-  }, [])
+    (async () => {
+      try {
+        setQuestionLoadingStatus('loading')
+        const res = await axios.get(
+          "http://localhost:3333/question/getAll?limit=5"
+        );
 
+        if (res.status === 200) {
+          setQuestionLoadingStatus('success')
+          setQuestions(res.data)
+        }
+      } catch (error) {
+        setQuestionLoadingStatus('error')
+      }
+    })();
 
+  }, []);
 
   return (
     <PageContainer>
@@ -37,14 +39,13 @@ const Home: NextPage = () => {
         <div className="h-full w-[100%] lg:w-[790px]">
           <SearchByQuestions />
           <div className="h-full max-w-[630px] mx-auto p-0 sm:pt-[50px]">
-            {questionsMutate?.status === 'success' && 
-              questionsMutate?.data?.map((question: any): ReactNode => (
-                <QuestionItem 
-                  key={question.id} 
-                  question={question} 
-                />
-              ))
-            }
+            {/* {questionsIsLoading && */}
+            {questions?.map(
+              (question: any): ReactNode => (
+                <QuestionItem key={question.id} question={question} />
+              )
+            )}
+            {/* )} */}
           </div>
         </div>
         <div className="h-full w-[490px] hidden lg:block">
@@ -54,6 +55,5 @@ const Home: NextPage = () => {
     </PageContainer>
   );
 };
-
 
 export default Home;

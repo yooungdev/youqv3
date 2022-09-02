@@ -1,14 +1,19 @@
 import { memo } from "react";
 //
 import { useRouter } from "next/router";
+//
+import moment from "moment";
 // components/UI
 import Avatar from "./UI/Avatar";
 import Button from "./UI/Button";
-import moment from "moment";
+// utils/helping
 import { itemsOptionsObject } from "utils/helping";
 
+
+
+
 type QuestionItemProps = {
-  question: any;
+  question?: any;
 };
 
 const QuestionItem = ({ question }: QuestionItemProps) => {

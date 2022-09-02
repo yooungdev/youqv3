@@ -1,25 +1,15 @@
-import { useRouter } from "next/router"
 import { useEffect } from "react"
 //
+import { useRouter } from "next/router"
+//
 import { itemsOptionsObject, classesOptionsObject } from "../../utils/helping"
-import { trpc } from "../../utils/trpc"
+
 
 
 
 const QuestionsNew = () => {
 
-    const newQuestionsMutate = trpc.useMutation(['question.getAll'])
 
-
-    useEffect(() => {
-        try {
-            newQuestionsMutate.mutate({
-            limit: 4
-          })
-        } catch (error) {
-          
-        }
-      }, [])
 
 
     return (
@@ -28,9 +18,9 @@ const QuestionsNew = () => {
                 Новые вопросы
             </span>
             <div className="pt-[30px]">
-                {newQuestionsMutate?.data?.map((newQuestion: any): any => (
+                {/* {newQuestionsMutate?.data?.map((newQuestion: any): any => (
                     <QuestionNew key={newQuestion.id} newQuestion={newQuestion} />
-                ))}
+                ))} */}
             </div>
         </div>
     )

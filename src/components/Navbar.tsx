@@ -6,7 +6,6 @@ import { useRouter } from "next/router"
 import Avatar from "./UI/Avatar"
 import Button from "./UI/Button"
 import useOutside from "../hooks/useOutside"
-import { signOut, useSession } from "next-auth/react"
 import { level } from "utils/helping"
 // utils/svg
 // import Plus from '../utils/svg/plus.svg'
@@ -21,7 +20,9 @@ const Navbar = ({ }: any) => {
     const router = useRouter()
 
     
-    const { data, status }: any = useSession()
+    // const { data, status }: any = useSession()
+    const data = undefined
+    const status = undefined
 
 
     const handleSignIn = () => {
@@ -30,7 +31,7 @@ const Navbar = ({ }: any) => {
 
     const handleSignOut = async () => {
         try {
-            await signOut()
+            // await signOut()
         } catch (error) {
 
         }
