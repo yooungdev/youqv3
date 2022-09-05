@@ -2,10 +2,13 @@ import { ReactNode, useState } from "react"
 //
 import Link from "next/link"
 import { useRouter } from "next/router"
+// hooks
+import { useTypedSelector } from "hooks/useTypedSelector"
 // components/UI
 import Avatar from "./UI/Avatar"
 import Button from "./UI/Button"
 import useOutside from "../hooks/useOutside"
+// utils/helping
 import { level } from "utils/helping"
 // utils/svg
 // import Plus from '../utils/svg/plus.svg'
@@ -18,12 +21,12 @@ const Navbar = ({ }: any) => {
     const [isDropdownUser, setIsDropdownUser] = useState(false)
 
     const router = useRouter()
-
     
-    // const { data, status }: any = useSession()
-    const data = undefined
-    const status = undefined
 
+    const { status, user } = useTypedSelector(state => state.user)
+
+
+    console.log(user, status)
 
     const handleSignIn = () => {
         router.push('/auth')
@@ -36,7 +39,7 @@ const Navbar = ({ }: any) => {
 
         }
     }
-    
+    const data = undefined
 
     const { ref } = useOutside(setIsDropdownUser)
 
@@ -50,7 +53,7 @@ const Navbar = ({ }: any) => {
             {/* <button>
                 <Plus fill="white" width={28} height={28}  />
             </button> */}
-            {status === 'authenticated' ? (
+            {status === 'authorized' ? (
                 <div ref={ref} className="relative hidden sm:block">
                     <div
                         onClick={() => setIsDropdownUser(prev => !prev)}
@@ -60,18 +63,18 @@ const Navbar = ({ }: any) => {
                         className="rounded-[10px] hover:bg-[#DEEBFF] cursor-pointer flex items-center py-[7px] px-[10px]"
                     >
                         <Avatar
-                            src={data?.user?.image}
+                            src={user?.image}
                             width={32}
                             height={32}
-                            isConfirmed={data?.user?.isConfirmed}
+                            isConfirmed={user?.isConfirmed}
                             className="rounded-[50%]"
                         />
                         <div className="flex ml-[10px] font-montserrat flex-col justify-center leading-[16px] text-[16px]">
                             <span className="font-semibold text-[#232323]">
-                                {data?.user?.name}
+                                {user?.name}
                             </span>
                             <span className="text-[#494949] font-medium">
-                                {level[data?.user?.level]}
+                                {level[user?.level]}
                             </span>
                         </div>
                     </div>

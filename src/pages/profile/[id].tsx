@@ -1,6 +1,7 @@
+import $api from "config"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import ProfileInfo from "../../components/Profile/ProfileInfo"
 import ProfileMenu from "../../components/Profile/ProfileMenu"
 import ProfileMenuElements from "../../components/Profile/ProfileMenuElements"
@@ -10,17 +11,31 @@ import PageContainer from "../../layouts/PageContainer"
 
 
 const Profile: NextPage = () => {
+    const [profile, setProfile] = useState<any>(null)
     
     const router = useRouter()
 
-const profileMutate: any = undefined
+    useEffect(() => {
+        (async () => {
+            if (router?.query?.id) {
+                try {
+                    const res = await $api.get(`/user/getOne?id=${router.query.id}`)
+                    setProfile(res.data)
+                } catch (error) {
+                    
+                }
+            }
+        })()
+    }, [])
+
+    const profileMutate: any = undefined
 
     return (
-        <PageContainer title={profileMutate?.data?.name ? `${profileMutate?.data?.name} - youq.org` : undefined}>
+        <PageContainer title={profile?.name ? `${profile.name} - youq.org` : undefined}>
             <div className="flex justify-between h-full">
                 <div className="h-full w-[100%] lg:w-[490px]">
                     <div className="max-w-[630px] lg:max-w-[330px] mx-auto h-full">
-                        <ProfileInfo profile={profileMutate?.data} />
+                        <ProfileInfo profile={profile} />
                     </div>
                 </div>
                 <div className="h-full w-[790px] hidden lg:block">

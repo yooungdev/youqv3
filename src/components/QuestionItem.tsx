@@ -42,9 +42,9 @@ const QuestionItem = ({ question }: QuestionItemProps) => {
             </div>
           </div>
         </div>
-        <div className="text-[18px] font-bold font-nunito text-[#636777] p-[8px] flex items-center justify-center rounded-[8px] bg-[#ebebeb]">
+        {/* <div className="text-[18px] font-bold font-nunito text-[#636777] p-[8px] flex items-center justify-center rounded-[8px] bg-[#ebebeb]">
           <span className="leading-none">{question?.rating}</span>
-        </div>
+        </div> */}
       </div>
       <div className="py-[13px]">
         <p

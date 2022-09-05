@@ -2,10 +2,8 @@ import { memo, ReactNode, useState } from "react";
 //
 import { convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 //
-import { trpc } from "utils/trpc";
 // components
 import MyEditor from "../MyEditor";
 // components/UI
@@ -16,11 +14,14 @@ import Answer from "../../utils/svg/answer.svg";
 import RatingUp from "../../utils/svg/rating_up.svg";
 import RatingDown from "../../utils/svg/rating_down.svg";
 import Share from "../../utils/svg/share.svg";
+//
+import socket from "../../socket";
 // utils/gif
 import LoadingSmall from "../../utils/gift/loading_small.gif";
 
 type QuestionQToolbarProps = {
   questionId: number | null | undefined;
+  authorId: number | null | undefined;
 };
 
 type Tab = {
@@ -28,7 +29,7 @@ type Tab = {
   name: string;
 };
 
-const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
+const QuestionQToolbar = ({ questionId, authorId }: QuestionQToolbarProps) => {
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
 
   const [isHoverUp, setIsHoverUp] = useState(false);
@@ -59,6 +60,7 @@ const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
                   <EditAnswer
                     questionId={questionId}
                     setActiveTab={setActiveTab}
+                    authorId={authorId}
                   />
                 ),
               })
@@ -80,6 +82,7 @@ const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
                   <EditComment
                     questionId={questionId}
                     setActiveTab={setActiveTab}
+                    authorId={authorId}
                   />
                 ),
               })
@@ -91,7 +94,7 @@ const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
           </button>
         </div>
         <div className="flex">
-          <button
+          {/* <button
             onMouseEnter={() => setIsHoverUp(true)}
             onMouseLeave={() => setIsHoverUp(false)}
             className="hover:bg-[#DEEBFF] bg-none border-none outline-none cursor-pointer py-[5px] px-[10px] rounded-[10px]"
@@ -112,7 +115,7 @@ const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
               width={24}
               height={24}
             />
-          </button>
+          </button> */}
           <button className="hover:bg-[#DEEBFF] ml-[20px] bg-none border-none outline-none cursor-pointer py-[5px] px-[10px] rounded-[10px]">
             <Share fill="#4971FF" width={22} height={22} />
           </button>
@@ -126,102 +129,111 @@ const QuestionQToolbar = ({ questionId }: QuestionQToolbarProps) => {
 type EditAnswerProps = {
   questionId: number | null | undefined | any;
   setActiveTab: any;
+  authorId: number | null | undefined | any;
 };
 
-const EditAnswer = memo(({ questionId, setActiveTab }: EditAnswerProps) => {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+const EditAnswer = memo(
+  ({ questionId, setActiveTab, authorId }: EditAnswerProps) => {
+    const [editorState, setEditorState] = useState(() =>
+      EditorState.createEmpty()
+    );
 
-  const { mutateAsync: createAnswer } = trpc.useMutation([
-    "question_protected.create_answer",
-  ]);
+    const onCreateAnswer = () => {
+      try {
+        const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
+        const value = blocks
+          .map((block) => (!block.text.trim() && "\n") || block.text)
+          .join("\n");
 
-  const onCreateAnswer = () => {
-    try {
-      const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-      const value = blocks
-        .map((block) => (!block.text.trim() && "\n") || block.text)
-        .join("\n");
+        socket.emit("createAnswerServer", {
+          text: value,
+          textHtml: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+          questionId,
+          authorId: authorId,
+        });
 
-      createAnswer({
-        text: value,
-        textHtml: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-        questionId,
-      });
+        setActiveTab(null);
+        setEditorState(EditorState.createEmpty());
+      } catch (error) {}
+    };
 
-      setActiveTab(null);
-      setEditorState(EditorState.createEmpty());
-    } catch (error) {}
-  };
-
-  return (
-    <div>
-      <MyEditor
-        editorState={editorState}
-        setEditorState={setEditorState}
-        placeholder="Помни! Лучший ответ - тот, который написан понятно и грамотно."
-      />
-      <Button
-        onClick={onCreateAnswer}
-        className="py-[5px] px-[30px] rounded-[15px] font-nunito border-none outline-none bg-[#4971FF] text-white text-[18px] font-bold cursor-pointer hover:bg-[#2851E4]"
-      >
-        Ответить
-      </Button>
-    </div>
-  );
-});
+    return (
+      <div>
+        <MyEditor
+          editorState={editorState}
+          setEditorState={setEditorState}
+          placeholder="Помни! Лучший ответ - тот, который написан понятно и грамотно."
+        />
+        <Button
+          onClick={onCreateAnswer}
+          className="py-[5px] px-[30px] rounded-[15px] font-nunito border-none outline-none bg-[#4971FF] text-white text-[18px] font-bold cursor-pointer hover:bg-[#2851E4]"
+        >
+          Ответить
+        </Button>
+      </div>
+    );
+  }
+);
 
 type EditCommentProps = {
   questionId: number | null | undefined | any;
   setActiveTab: (arg: null) => void;
+  authorId: number | null | undefined;
 };
 
-const EditComment = memo(({ questionId, setActiveTab }: EditCommentProps) => {
-  const [comment, setComment] = useState("");
+const EditComment = memo(
+  ({ questionId, setActiveTab, authorId }: EditCommentProps) => {
+    const [comment, setComment] = useState("");
 
-  const { data, status } = useSession();
+    const [loadingComment, setLoadingComment] = useState<
+      "idle" | "loading" | "error" | "success"
+    >("idle");
 
-  const questionCommentMutate = trpc.useMutation([
-    "question_protected.create_comment_to_question",
-  ]);
+    const handleKeyDown = async (e: any) => {
+      if (e.key === "Enter") {
+        setLoadingComment("loading");
+        try {
+          setTimeout(() => {
+            socket.emit("createQuestionCommentServer", {
+              text: comment,
+              questionId,
+              authorId,
+            });
 
-  const handleKeyDown = async (e: any) => {
-    if (e.key === "Enter" && status === "authenticated") {
-      try {
-        await questionCommentMutate.mutateAsync({
-          text: comment,
-          questionId: questionId,
-        });
-        setComment("");
-        setActiveTab(null);
-      } catch (error) {}
-    }
-  };
+            setLoadingComment("success");
+            setComment("");
+            setActiveTab(null);
+          }, 500);
+        } catch (error) {
+          setLoadingComment("error");
+        }
+      }
+    };
 
-  return (
-    <div className="mt-[10px] relative">
-      {questionCommentMutate?.status === "loading" && (
-        <div className="absolute right-[10px] bottom-[-10px]">
-          <Image
-            src={LoadingSmall}
-            alt="loading"
-            objectFit="contain"
-            height={40}
-            width={40}
-          />
-        </div>
-      )}
-      <input
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Уточните вопрос"
-        className="w-full rounded-[20px] py-[3px] px-[13px] outline-none text-[16px] border-[1px] border-[hsl(0, 0%, 90%)]"
-        type="text"
-      />
-    </div>
-  );
-});
+    return (
+      <div className="mt-[10px] relative">
+        {loadingComment === "loading" && (
+          <div className="absolute right-[10px] bottom-[-10px]">
+            <Image
+              src={LoadingSmall}
+              alt="loading"
+              objectFit="contain"
+              height={40}
+              width={40}
+            />
+          </div>
+        )}
+        <input
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Уточните вопрос"
+          className="w-full rounded-[20px] py-[3px] px-[13px] outline-none text-[16px] border-[1px] border-[hsl(0, 0%, 90%)]"
+          type="text"
+        />
+      </div>
+    );
+  }
+);
 
 export default QuestionQToolbar;

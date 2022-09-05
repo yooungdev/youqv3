@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 //
 import Image from "next/image";
+import axios from "axios";
 // components
 import QuestionQ from "../../components/Question/QuestionQ";
 import QuestionA from "../../components/Question/QuestionA";
@@ -11,15 +12,22 @@ import QuestionsNew from "../../components/Question/QuestionsNew";
 import QuestionQToolbar from "../../components/Question/QuestionQToolbar";
 // layouts
 import PageContainer from "../../layouts/PageContainer";
+// hooks
+import { useTypedSelector } from "hooks/useTypedSelector";
+// utils
+import socket from "../../socket";
 // utils/gift
 import Loading from "../../utils/gift/loading.gif";
-import axios from "axios";
 
 const Question: NextPage = () => {
   const [question, setQuestion] = useState<any>(undefined);
   const [questionLoadingStatus, setQuestionLoadingStatus] = useState<
     "idle" | "success" | "error" | "loading"
   >("idle");
+
+
+  const { status, user } = useTypedSelector(state => state.user)
+
 
   const router = useRouter();
 
@@ -55,9 +63,12 @@ const Question: NextPage = () => {
           {questionLoadingStatus === "success" && (
             <div className="max-w-[630px] mx-auto">
               <QuestionQ question={question} />
-              {/* {status === "authenticated" && (
-                  <QuestionQToolbar questionId={questionMutate?.data?.id} />
-                )} */}
+              {status === "authorized" && (
+                  <QuestionQToolbar
+                    authorId={user.id} 
+                    questionId={question?.id} 
+                  />
+                )}
               {question?.answers?.length > 0 && (
                 <div className="mt-[30px]">
                   <span className="text-[19px] sm:text-[21px] text-[#494949] font-semibold font-nunito">
@@ -94,6 +105,24 @@ type QuestionAnwersProps = {
 const QuestionAnwers = memo(
   ({ initialAnswers, questionId }: QuestionAnwersProps) => {
     const [answers, setAnswers] = useState(initialAnswers ?? []);
+
+
+    useEffect(() => {
+      const listener = (answer: any) => {
+        setAnswers((prev: any): any => {
+          if (prev.length > 0) {
+            return [answer, ...prev]
+          }
+  
+          return [answer]
+        })
+      }
+
+      socket.on('createAnswerClient', listener)
+
+
+      return () => socket.off('createAnswerClient', listener)
+    }, [])
 
     return (
       <div className="w-full flex flex-col pt-[30px]">

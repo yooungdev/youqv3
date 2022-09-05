@@ -1,6 +1,7 @@
 import Image from "next/image";
 // utils/svg
 import IsConfirmed from "../../utils/svg/confirmed.svg";
+import AvatarSvg from "../../utils/svg/avatar.svg";
 
 type AvatarProps = {
   src: string | null | undefined;
@@ -32,13 +33,22 @@ const Avatar = ({
       className="relative"
       onClick={onClick}
     >
-      <Image
-        src={src ?? "https://s3.timeweb.com/cg16553-youq/avatar.svg"}
-        alt="avatar"
+      {src ? (
+        <Image
+          src={src}
+          alt="avatar"
+          width={width}
+          height={height}
+          className={className}
+        />
+      ) : (
+        <AvatarSvg 
         width={width}
         height={height}
         className={className}
       />
+      )}
+
       {isConfirmed && (
         <div className="absolute bottom-0 right-[-2px] bg-white rounded-full">
           <IsConfirmed width={15} fill="#4971FF" />

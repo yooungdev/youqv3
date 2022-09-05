@@ -1,32 +1,30 @@
 import { useRouter } from "next/router"
+// hooks
+import { useTypedSelector } from "hooks/useTypedSelector"
 // utils/icons
 import Plus from '../utils/svg/plus.svg'
 import User from '../utils/svg/user.svg'
 import Menu from '../utils/svg/menu.svg'
 
 
-type NavbarMobileProps = {
-    session?: any
-}
+const NavbarMobile = () => {
 
-const NavbarMobile = ({ 
-    session
-}: NavbarMobileProps) => {
+    const { status, user } = useTypedSelector(state => state.user)
 
 
     const router = useRouter()
 
 
     const isUser = () => {
-        if (session?.data?.user?.id) {
-            return `/profile/${session?.data?.user?.id}`
+        if (status === 'authorized' && user?.id) {
+            return `/profile/${user?.id}`
         }
 
         return '/auth'
     }
 
     const getActiveUser = () => {
-        if (router.asPath === `/profile/${session?.data?.user?.id}`) {
+        if (router.asPath === `/profile/${user?.id}`) {
             return '#4971FF'
         }
 
@@ -77,7 +75,7 @@ const NavbarMobile = ({
                     style={{
                         color: getActiveUser()
                     }} className="text-[14px] font-bold font-nunito leading-4">
-                        {session?.data?.user ? 'Профиль' : 'Войти'}
+                        {status === 'authorized' ? 'Профиль' : 'Войти'}
                     </span>
                 </button>
             </div>

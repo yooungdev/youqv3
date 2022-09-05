@@ -1,5 +1,4 @@
 import moment from "moment";
-import { useSession } from "next-auth/react";
 import { memo } from "react";
 import { level, role } from "utils/helping";
 // components/UI
@@ -13,7 +12,7 @@ type ProfileInfoProps = {
 const ProfileInfo = ({ profile }: ProfileInfoProps) => {
   const createdAtProfile = new Date(String(profile?.createdAt));
 
-  const { data, status }: any = useSession();
+  // const { data, status }: any = useSession();
 
   return (
     <div className="shadow-standart rounded-[10px] flex flex-col justify-between p-[20px] bg-white">
@@ -34,11 +33,11 @@ const ProfileInfo = ({ profile }: ProfileInfoProps) => {
           </span>
         </div>
       </div>
-      {status === "authenticated" && data?.user?.id && data?.user?.id === profile?.id && (
+      {/* {status === "authenticated" && data?.user?.id && data?.user?.id === profile?.id && (
         <Button className="w-full hover:bg-[#E4E4FB] text-[#4971FF] font-nunito text-[17px] font-bold py-[3px] px-[6px] cursor-pointer rounded-[10px] bg-[#E8F1FF] border-none outline-none mt-[15px]">
           Редактировать
         </Button>
-      )}
+      )} */}
       <div className="pt-[20px] w-full">
         <span className="text-[16px] font-montserrat font-semibold">
           Информация

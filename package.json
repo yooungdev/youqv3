@@ -8,14 +8,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.163.0",
+    "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "next": "^12.1.6",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-redux": "^8.0.2",
     "react-select": "^5.4.0",
+    "redux": "^4.2.0",
     "socket.io-client": "^4.5.1"
   },
   "devDependencies": {

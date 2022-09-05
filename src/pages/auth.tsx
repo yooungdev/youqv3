@@ -1,5 +1,5 @@
+import axios from "axios"
 import type { NextPage } from "next"
-import { signIn } from "next-auth/react"
 import Button from "../components/UI/Button"
 // layouts
 import PageContainer from "../layouts/PageContainer"
@@ -9,7 +9,13 @@ const Auth: NextPage = () => {
 
     const handleSignIn =async () => {
         try {
-            await signIn()
+            // await signIn()
+            const res = await axios.post('http://localhost:3333/auth/local/signin', {
+                email: 'test@mail.ru',
+                password: 'test'
+            })
+            localStorage.setItem('token', res.data.access_token)
+            console.log(res)
         } catch(e) {
 
         }
@@ -32,12 +38,12 @@ const Auth: NextPage = () => {
                                 Авторизация
                             </span>
                         </div>
-                        <form className="p-[10px] w-full flex flex-col">
+                        {/* <form className="p-[10px] w-full flex flex-col"> */}
                             <input 
-
+                                type="email"
                             />
                             <input 
-                            
+                                type="password"
                             />
                             <Button 
                                 onClick={handleSignIn}
@@ -46,7 +52,7 @@ const Auth: NextPage = () => {
                             >
                                 Войти
                             </Button>
-                        </form>
+                        {/* </form> */}
                     </div>
                 </div>
             </div>
