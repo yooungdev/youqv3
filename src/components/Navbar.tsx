@@ -82,7 +82,7 @@ const Navbar = ({ }: any) => {
                     <DropdownUser isShow={isDropdownUser}>
                         <div className="w-full flex flex-col">
                             <Button
-                                onClick={() => router.push(`/profile/${data?.user?.id}`)}
+                                onClick={() => router.push(`/profile/${user?.id}`)}
                                 className="flex items-center rounded-[10px] py-[7px] px-[14px] bg-none outline-none border-none cursor-pointer text-[#232323] text-[16px] font-montserrat font-semibold hover:bg-[#F3F4FF]"
                             >
                                 <span className="ml-[10px]">

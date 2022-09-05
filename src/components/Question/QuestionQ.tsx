@@ -101,7 +101,9 @@ const QuestionQComments = memo(
       socket.on('createQuestionCommentClient', listener)
   
 
-      return () => socket.off('createQuestionCommentClient', listener)
+      return () => {
+        socket.off('createQuestionCommentClient', listener)
+      }
     }, [])
     
 

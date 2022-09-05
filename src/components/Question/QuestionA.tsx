@@ -101,9 +101,10 @@ const QuestionAComments = memo(
 
       socket.on("createAnswerCommentClient", listener);
 
-      return () => socket.off("createAnswerCommentClient", listener);
+      return () => {
+        socket.off("createAnswerCommentClient", listener);
+      }
     }, []);
-
 
     const handleKeyDown = async (e: any) => {
       if (e.key === "Enter") {

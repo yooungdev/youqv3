@@ -121,7 +121,9 @@ const QuestionAnwers = memo(
       socket.on('createAnswerClient', listener)
 
 
-      return () => socket.off('createAnswerClient', listener)
+      return () => {
+        socket.off('createAnswerClient', listener)
+      }
     }, [])
 
     return (
