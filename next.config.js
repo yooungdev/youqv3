@@ -8,7 +8,7 @@ module.exports = {
   },
   publicRuntimeConfig: {
     // Will be available on both server and client
-    APP_URL: process.env.APP_URL,
+    API_URL: process.env.API_URL,
     WS_URL: process.env.WS_URL,
   },
   reactStrictMode: true,

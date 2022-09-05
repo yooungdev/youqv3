@@ -1,6 +1,14 @@
 import axios from "axios";
+//
+import getConfig from 'next/config';
 
-const API_URL = 'http://localhost:3333'
+const { publicRuntimeConfig } = getConfig();
+
+const { APP_URL } = publicRuntimeConfig;
+
+
+
+const API_URL = APP_URL
 
 const $api = axios.create({
     baseURL: API_URL,

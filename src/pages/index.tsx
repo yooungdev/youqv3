@@ -7,6 +7,7 @@ import FilterByQuestions from "../components/FilterByQuestions";
 import SearchByQuestions from "../components/SearchByQuestions";
 import QuestionItem from "../components/QuestionItem";
 import axios from "axios";
+import $api from "config";
 
 const Home: NextPage = () => {
   const [questions, setQuestions] = useState<any>(undefined);
@@ -18,8 +19,8 @@ const Home: NextPage = () => {
     (async () => {
       try {
         setQuestionLoadingStatus('loading')
-        const res = await axios.get(
-          "http://localhost:3333/question/getAll?limit=5"
+        const res = await $api.get(
+          `question/getAll?limit=5`
         );
 
         if (res.status === 200) {

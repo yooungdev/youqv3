@@ -18,6 +18,7 @@ import { useTypedSelector } from "hooks/useTypedSelector";
 import socket from "../../socket";
 // utils/gift
 import Loading from "../../utils/gift/loading.gif";
+import $api from "config";
 
 const Question: NextPage = () => {
   const [question, setQuestion] = useState<any>(undefined);
@@ -36,8 +37,8 @@ const Question: NextPage = () => {
       if (router?.query?.id) {
         try {
           setQuestionLoadingStatus("loading");
-          const res = await axios.get(
-            `http://localhost:3333/question/getOne/${router.query.id}`
+          const res = await $api.get(
+            `question/getOne/${router.query.id}`
           );
 
           if (res.status === 200) {
