@@ -1,29 +1,50 @@
-import axios from "axios"
+import { ReactNode, useEffect, useState } from "react"
 import type { NextPage } from "next"
 import Button from "../components/UI/Button"
 // layouts
 import PageContainer from "../layouts/PageContainer"
+import Login from "components/Auth/Login"
+import Registration from "components/Auth/Registration"
+import { useTypedSelector } from "hooks/useTypedSelector"
+import { useRouter } from "next/router"
 
 
 const Auth: NextPage = () => {
 
-    const handleSignIn =async () => {
-        try {
-            // await signIn()
-            const res = await axios.post('http://localhost:3333/auth/local/signin', {
-                email: 'test@mail.ru',
-                password: 'test'
-            })
-            localStorage.setItem('token', res.data.access_token)
-            console.log(res)
-        } catch(e) {
+    const [activeTab, setActiveTab] = useState<{
+        component: ReactNode,
+        name: string
+    } | null>(null)
 
-        }
+
+    const { status } = useTypedSelector(state => state.user)
+
+    const router = useRouter()
+    
+    const LoginC = {
+        name: 'Вход', 
+        component: <Login toGoRegistration={() => setActiveTab(RegistrationC)} />
     }
+    const RegistrationC = {
+        name: 'Регистрация', 
+        component: <Registration toGoLogin={() => setActiveTab(LoginC)} />
+    }
+
+    useEffect(() => {
+        if (status === 'authorized') {
+            router.push('/')
+        }
+
+
+        setActiveTab(LoginC)
+    }, [status])
+
+
+
     return (
         <PageContainer title="Авторизовация - youq.org">
             <div className="w-full h-full flex  items-center justify-center">
-                <div className="shadow-standart flex rounded-[10px] w-[700px] p-[12px] sm:p-[20px] bg-white">
+                <div className="shadow-standart flex rounded-[10px] w-[630px] p-[12px] sm:p-[20px] bg-white">
                     <div className="w-[50%] hidden sm:flex items-center justify-center flex-col">
                         <span className="font-[900] font-nunito text-[3em] text-[#4971FF]">
                             YouQ
@@ -35,24 +56,10 @@ const Auth: NextPage = () => {
                     <div className="w-[100%] sm:w-[50%] flex flex-col">
                         <div className="text-[#172b4d] text-[22px] font-montserrat font-semibold">
                             <span>
-                                Авторизация
+                                {activeTab?.name}
                             </span>
                         </div>
-                        {/* <form className="p-[10px] w-full flex flex-col"> */}
-                            <input 
-                                type="email"
-                            />
-                            <input 
-                                type="password"
-                            />
-                            <Button 
-                                onClick={handleSignIn}
-                                // type="submit"
-                                className="border-none outline-none cursor-pointer py-[5px] px-[10px] mt-[20px] font-semibold text-white text-[16px] rounded-[10px] bg-[#2684ff] hover:bg-[#4971FF]"
-                            >
-                                Войти
-                            </Button>
-                        {/* </form> */}
+                        {activeTab?.component}
                     </div>
                 </div>
             </div>

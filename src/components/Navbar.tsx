@@ -34,7 +34,9 @@ const Navbar = ({ }: any) => {
 
     const handleSignOut = async () => {
         try {
-            // await signOut()
+            localStorage.removeItem('token')
+            localStorage.removeItem('userId')
+            router.reload()
         } catch (error) {
 
         }

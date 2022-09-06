@@ -26,7 +26,7 @@ const Profile: NextPage = () => {
                 }
             }
         })()
-    }, [])
+    }, [router.query?.id])
 
     const profileMutate: any = undefined
 

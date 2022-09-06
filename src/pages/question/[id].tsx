@@ -2,9 +2,6 @@ import { ReactNode, useEffect, useState, memo } from "react";
 import type { NextPage } from "next";
 //
 import { useRouter } from "next/router";
-//
-import Image from "next/image";
-import axios from "axios";
 // components
 import QuestionQ from "../../components/Question/QuestionQ";
 import QuestionA from "../../components/Question/QuestionA";
@@ -50,7 +47,7 @@ const Question: NextPage = () => {
         }
       }
     })();
-  }, [router.query.id]);
+  }, [router.query?.id]);
 
   return (
     <PageContainer title={question?.text ?? undefined}>

@@ -26,7 +26,7 @@ const AuthWrapper = ({
         (async () => {
             setStatus('loading')
             try {
-                const res = await $api.get(`user/getAuth?id=${3}`)
+                const res = await $api.get(`user/getAuth?id=${localStorage.getItem('userId')}`)
 
                 if (res.status === 200) {
                     setUser(res.data)
