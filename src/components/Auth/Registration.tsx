@@ -1,4 +1,4 @@
-const Registration = ({ toGoLogin }) => {
+const Registration = ({ toGoLogin }: any) => {
     return (
         <div>
 
