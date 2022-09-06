@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState, memo } from "react";
-import type { NextPage } from "next";
 //
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
 // components
 import QuestionQ from "../../components/Question/QuestionQ";
@@ -15,7 +15,11 @@ import { useTypedSelector } from "hooks/useTypedSelector";
 import socket from "../../socket";
 // utils/gift
 import Loading from "../../utils/gift/loading.gif";
+//
 import $api from "config";
+
+
+
 
 const Question: NextPage = () => {
   const [question, setQuestion] = useState<any>(undefined);
@@ -30,8 +34,8 @@ const Question: NextPage = () => {
   useEffect(() => {
     (async () => {
       if (router?.query?.id) {
+        setQuestionLoadingStatus("loading");
         try {
-          setQuestionLoadingStatus("loading");
           const res = await $api.get(`question/getOne/${router.query.id}`);
 
           if (res.status === 200) {
