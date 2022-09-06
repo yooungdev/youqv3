@@ -12,7 +12,6 @@ type ProfileInfoProps = {
 const ProfileInfo = ({ profile }: ProfileInfoProps) => {
   const createdAtProfile = new Date(String(profile?.createdAt));
 
-  // const { data, status }: any = useSession();
 
   return (
     <div className="shadow-standart rounded-[10px] flex flex-col justify-between p-[20px] bg-white">

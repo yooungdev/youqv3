@@ -20,7 +20,7 @@ type QuestionAProps = {
 
 const QuestionA = ({ answer }: QuestionAProps) => {
   const router = useRouter();
-
+  
   const createdAtAnswer = new Date(String(answer?.createdAt));
 
   return (

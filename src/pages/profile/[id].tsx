@@ -28,7 +28,6 @@ const Profile: NextPage = () => {
         })()
     }, [router.query?.id])
 
-    const profileMutate: any = undefined
 
     return (
         <PageContainer title={profile?.name ? `${profile.name} - youq.org` : undefined}>

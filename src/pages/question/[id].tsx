@@ -74,12 +74,10 @@ const Question: NextPage = () => {
                   </span>
                 </div>
               )}
-              {/* {questionMutate?.status === "success" && ( */}
               <QuestionAnwers
                 questionId={question?.id}
                 initialAnswers={question?.answers}
               />
-              {/* )} */}
             </div>
           )}
         </div>
