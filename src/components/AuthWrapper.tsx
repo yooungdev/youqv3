@@ -26,6 +26,7 @@ const AuthWrapper = ({
         (async () => {
             setStatus('loading')
             try {
+               if (localStorage.getItem('userId')) {
                 const res = await $api.get(`user/getAuth?id=${localStorage.getItem('userId')}`)
 
                 if (res.status === 200) {
@@ -34,6 +35,9 @@ const AuthWrapper = ({
                 } else {
                     setStatus('unauthorized')
                 }
+               } else {
+                setStatus('unauthorized')
+               }
             } catch (error) {
                 setStatus('error')
             }
