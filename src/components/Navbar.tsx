@@ -11,7 +11,7 @@ import useOutside from "../hooks/useOutside";
 // utils/helping
 import { level } from "utils/helping";
 // utils/svg
-import Plus from '../utils/svg/plus.svg'
+import Plus from "../utils/svg/plus.svg";
 
 const Navbar = ({}: any) => {
   const [isDropdownUser, setIsDropdownUser] = useState(false);
@@ -33,7 +33,6 @@ const Navbar = ({}: any) => {
       router.reload();
     } catch (error) {}
   };
-  const data = undefined;
 
   const { ref } = useOutside(setIsDropdownUser);
 
@@ -42,14 +41,10 @@ const Navbar = ({}: any) => {
       <span className="font-nunito hidden sm:block font-black text-4xl text-[#4971FF]">
         <Link href="/">YouQ</Link>
       </span>
-      {/* <button>
-                <Plus fill="white" width={28} height={28}  />
-            </button> */}
+      <div className="w-full">hi</div>
       {status === "authorized" ? (
         <div className="flex items-center">
-          <button
-            className="mr-[30px] border-none hover:shadow-none rounded-[12px] bg-[#4971FF] outline-none cursor-pointer text-white hidden sm:flex items-center justify-center h-[33px] w-[33px] shadow-create"
-          >
+          <button className="mr-[30px] border-none hover:shadow-none rounded-[12px] bg-[#4971FF] outline-none cursor-pointer text-white hidden sm:flex items-center justify-center h-[33px] w-[33px] shadow-create">
             <Plus fill="white" width={23} height={23} />
           </button>
           <div ref={ref} className="relative hidden sm:block">
