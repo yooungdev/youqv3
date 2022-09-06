@@ -4,11 +4,8 @@ import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
 
-const { APP_URL } = publicRuntimeConfig;
+const { API_URL } = publicRuntimeConfig;
 
-
-
-const API_URL = APP_URL
 
 const $api = axios.create({
     baseURL: API_URL,
