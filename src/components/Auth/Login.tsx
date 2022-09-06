@@ -1,9 +1,11 @@
-import Button from "components/UI/Button";
-import $api from "config";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-
+//
 import * as Yup from "yup";
+//
+import Button from "components/UI/Button";
+//
+import $api from "config";
 
 const Login = ({ toGoRegistration }: any) => {
   const router = useRouter();
@@ -23,12 +25,12 @@ const Login = ({ toGoRegistration }: any) => {
           email: values.email,
           password: values.password,
         });
-        console.log(res)
+        console.log(res);
 
         if (res.status === 201) {
           localStorage.setItem("token", res.data.access_token);
           localStorage.setItem("userId", res.data.userId);
-          router.reload()
+          router.reload();
         }
       } catch (error) {}
     },
@@ -54,12 +56,12 @@ const Login = ({ toGoRegistration }: any) => {
         className="border-neutral-300  mt-[15px] rounded-[5px] border-[1px] outline-none py-[3px] px-[10px]"
         type="password"
       />
-      <button
+      <Button
         type="submit"
         className="bg-[#4971ff] mt-[15px] rounded-[10px] py-[3px] text-[17px] font-bold text-white font-nunito"
       >
         Войти
-      </button>
+      </Button>
       <span
         onClick={toGoRegistration}
         className="text-[#4971ff] hover:underline cursor-pointer"
