@@ -97,7 +97,7 @@ const Home: NextPage = () => {
                     <QuestionItem key={question.id} question={question} />
                   )
                 )}
-                <Button className="bg-white rounded-[10px]  text-[#4971ff] font-nunito font-bold py-[7px] shadow-standart w-full mb-[80px] sm:mb-[15px] mt-[20px]">
+                <Button className="bg-white rounded-[10px] text-[17px] text-[#4971ff] font-nunito font-bold py-[7px] shadow-standart w-full mb-[80px] sm:mb-[15px] mt-[20px]">
                   Загрузить еще
                 </Button>
               </>

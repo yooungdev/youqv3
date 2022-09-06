@@ -23,9 +23,7 @@ const Question: NextPage = () => {
     "idle" | "success" | "error" | "loading"
   >("idle");
 
-
-  const { status, user } = useTypedSelector(state => state.user)
-
+  const { status, user } = useTypedSelector((state) => state.user);
 
   const router = useRouter();
 
@@ -34,9 +32,7 @@ const Question: NextPage = () => {
       if (router?.query?.id) {
         try {
           setQuestionLoadingStatus("loading");
-          const res = await $api.get(
-            `question/getOne/${router.query.id}`
-          );
+          const res = await $api.get(`question/getOne/${router.query.id}`);
 
           if (res.status === 200) {
             setQuestionLoadingStatus("success");
@@ -62,11 +58,11 @@ const Question: NextPage = () => {
             <div className="max-w-[630px] mx-auto">
               <QuestionQ question={question} />
               {status === "authorized" && (
-                  <QuestionQToolbar
-                    authorId={user.id} 
-                    questionId={question?.id} 
-                  />
-                )}
+                <QuestionQToolbar
+                  authorId={user.id}
+                  questionId={question?.id}
+                />
+              )}
               {question?.answers?.length > 0 && (
                 <div className="mt-[30px]">
                   <span className="text-[19px] sm:text-[21px] text-[#494949] font-semibold font-nunito">
@@ -102,25 +98,25 @@ const QuestionAnwers = memo(
   ({ initialAnswers, questionId }: QuestionAnwersProps) => {
     const [answers, setAnswers] = useState(initialAnswers ?? []);
 
-
     useEffect(() => {
       const listener = (answer: any) => {
-        setAnswers((prev: any): any => {
-          if (prev.length > 0) {
-            return [answer, ...prev]
-          }
-  
-          return [answer]
-        })
-      }
+        if (answer?.questionId === questionId) {
+          setAnswers((prev: any): any => {
+            if (prev.length > 0) {
+              return [answer, ...prev];
+            }
 
-      socket.on('createAnswerClient', listener)
+            return [answer];
+          });
+        }
+      };
 
+      socket.on("createAnswerClient", listener);
 
       return () => {
-        socket.off('createAnswerClient', listener)
-      }
-    }, [])
+        socket.off("createAnswerClient", listener);
+      };
+    }, []);
 
     return (
       <div className="w-full flex flex-col pt-[30px]">

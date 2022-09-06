@@ -90,13 +90,15 @@ const QuestionAComments = memo(
 
     useEffect(() => {
       const listener = (answerComment: any) => {
-        setComments((prev: any): any => {
-          if (prev.length > 0) {
-            return [...prev, answerComment];
-          }
-
-          return [answerComment];
-        });
+        if (answerComment?.answerId === answerId) {
+          setComments((prev: any): any => {
+            if (prev.length > 0) {
+              return [...prev, answerComment];
+            }
+  
+            return [answerComment];
+          });
+        }
       };
 
       socket.on("createAnswerCommentClient", listener);

@@ -41,10 +41,10 @@ const Navbar = ({}: any) => {
       <span className="font-nunito hidden sm:block font-black text-4xl text-[#4971FF]">
         <Link href="/">YouQ</Link>
       </span>
-      <div className="w-full">hi</div>
+      <div className="w-full flex sm:hidden">hi</div>
       {status === "authorized" ? (
         <div className="flex items-center">
-          <button className="mr-[30px] border-none hover:shadow-none rounded-[12px] bg-[#4971FF] outline-none cursor-pointer text-white hidden sm:flex items-center justify-center h-[33px] w-[33px] shadow-create">
+          <button onClick={() => router.push('/ask')} className="mr-[30px] border-none hover:shadow-none rounded-[12px] bg-[#4971FF] outline-none cursor-pointer text-white hidden sm:flex items-center justify-center h-[33px] w-[33px] shadow-create">
             <Plus fill="white" width={23} height={23} />
           </button>
           <div ref={ref} className="relative hidden sm:block">
