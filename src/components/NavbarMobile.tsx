@@ -32,7 +32,7 @@ const NavbarMobile = () => {
   };
 
   return (
-    <div className="shadow-nav_mob fixed left-[50%] bottom-[10px] z-50 w-[96%] h-[52px] flex items-center justify-around rounded-[10px] bg-white translate-x-[-50%] sm:hidden">
+    <div className="shadow-nav_mob fixed left-[50%] bottom-[10px] z-50 w-[96%] h-[52px] flex items-center justify-evenly rounded-[10px] bg-white translate-x-[-50%] sm:hidden">
       <button
         onClick={() => router.push("/")}
         className="flex h-full flex-col items-center justify-center bg-none border-none rounded"
@@ -54,7 +54,7 @@ const NavbarMobile = () => {
 
       <button
         onClick={() => router.push("/ask")}
-        className="border-none hover:shadow-none rounded-[17px] bg-[#4971FF] outline-none cursor-pointer text-white flex items-center justify-center h-[36px] w-[36px] shadow-create"
+        className="border-none hover:shadow-none rounded-[13px] bg-[#4971FF] outline-none cursor-pointer text-white flex items-center justify-center h-[36px] w-[36px] shadow-create"
       >
         <Plus fill="white" width={26} height={26} />
       </button>

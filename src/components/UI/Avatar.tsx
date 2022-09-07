@@ -50,7 +50,7 @@ const Avatar = ({
       )}
 
       {isConfirmed && (
-        <div className="absolute bottom-0 right-[-2px] bg-white rounded-full">
+        <div className="absolute bottom-0 right-[-2px] p-[1px] bg-white rounded-full">
           <IsConfirmed width={15} fill="#4971FF" />
         </div>
       )}

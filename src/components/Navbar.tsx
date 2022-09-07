@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 //
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,6 +12,8 @@ import useOutside from "../hooks/useOutside";
 import { level } from "utils/helping";
 // utils/svg
 import Plus from "../utils/svg/plus.svg";
+import Cubes from "../utils/svg/cube.svg";
+import Questions from "../utils/svg/question.svg";
 
 const Navbar = ({}: any) => {
   const [isDropdownUser, setIsDropdownUser] = useState(false);
@@ -19,8 +21,6 @@ const Navbar = ({}: any) => {
   const router = useRouter();
 
   const { status, user } = useTypedSelector((state) => state.user);
-
-  console.log(user, status);
 
   const handleSignIn = () => {
     router.push("/auth");
@@ -36,15 +36,66 @@ const Navbar = ({}: any) => {
 
   const { ref } = useOutside(setIsDropdownUser);
 
+  const getTitleNavbar = () => {
+    if (router.pathname === "/") {
+      return (
+        <span className="text-center w-full font-nunito font-bold text-[20px]">
+          Вопросы
+        </span>
+      );
+    }
+  };
+
+  const navbarMenu = useMemo(() => {
+
+    return (
+      <div className="hidden sm:flex">
+        {/* bg-[#E8F1FF]  */}
+        <Button
+          onClick={() => router.push("/")}
+          style={{
+            color: router.pathname === "/" ? "white" : "#4971ff",
+            background: router.pathname === "/" ? "#4971ff" : "none",
+          }}
+          className="bg-none flex hover:underline  items-center rounded-[14px] h-[34px] px-[14px] font-nunito text-[18px] font-bold"
+        >
+          <Questions
+            fill={router.pathname === "/" ? "white" : "#4971ff"}
+            width={13}
+          />
+          <span className="ml-[8px]">Вопросы</span>
+        </Button>
+        <Button
+          onClick={() => router.push("/tests")}
+          style={{
+            color: router.pathname === "/tests" ? "white" : "#4971ff",
+            background: router.pathname === "/tests" ? "#4971ff" : "none",
+          }}
+          className="rounded-[14px] ml-[5px] hover:underline flex items-center h-[34px] px-[14px] font-nunito text-[18px] font-bold"
+        >
+          <Cubes
+            fill={router.pathname === "/tests" ? "white" : "#4971ff"}
+            width={18}
+          />
+          <span className="ml-[8px]">Тесты</span>
+        </Button>
+      </div>
+    );
+  }, [router.pathname]);
+
   return (
     <div className="flex items-center justify-between h-[50px] sm:h-[60px] py-[10px] px-[20px] w-full bg-white fixed z-50 shadow-nav">
       <span className="font-nunito hidden sm:block font-black text-4xl text-[#4971FF]">
         <Link href="/">YouQ</Link>
       </span>
-      <div className="w-full flex sm:hidden">hi</div>
+      {navbarMenu}
+      <div className="w-full flex sm:hidden">{getTitleNavbar()}</div>
       {status === "authorized" ? (
         <div className="flex items-center">
-          <button onClick={() => router.push('/ask')} className="mr-[30px] border-none hover:shadow-none rounded-[12px] bg-[#4971FF] outline-none cursor-pointer text-white hidden sm:flex items-center justify-center h-[33px] w-[33px] shadow-create">
+          <button
+            onClick={() => router.push("/ask")}
+            className="mr-[30px] border-none hover:shadow-none rounded-[12px] bg-[#4971FF] outline-none cursor-pointer text-white hidden sm:flex items-center justify-center h-[33px] w-[33px] shadow-create"
+          >
             <Plus fill="white" width={23} height={23} />
           </button>
           <div ref={ref} className="relative hidden sm:block">

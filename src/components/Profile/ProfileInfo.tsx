@@ -12,7 +12,6 @@ type ProfileInfoProps = {
 const ProfileInfo = ({ profile }: ProfileInfoProps) => {
   const createdAtProfile = new Date(String(profile?.createdAt));
 
-
   return (
     <div className="shadow-standart rounded-[10px] flex flex-col justify-between p-[20px] bg-white">
       <div className="flex w-full">
@@ -45,7 +44,12 @@ const ProfileInfo = ({ profile }: ProfileInfoProps) => {
         <div>
           <div>{role[profile?.role]}</div>
           <div>Рейтинг: {profile?.rating}</div>
-          <div>С нами с: {moment(createdAtProfile).format("LLL")}</div>
+          <div>
+            С нами с: 
+            <span className="font-medium ml-[4px]">
+              {moment(createdAtProfile).format("LLL")}
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ const QuestionQ = ({ question }: QuestionQProps) => {
         />
       )}
       {status !== "authorized" && (
-        <div className="mt-[15px]">
+        <div className="mt-[15px] hidden sm:block">
           <p className="text-[#4971FF]  text-[16px] font-medium font-sans">
             <span
               onClick={() => router.push("/auth")}

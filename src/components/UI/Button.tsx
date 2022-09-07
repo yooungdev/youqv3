@@ -8,6 +8,7 @@ type ButtonProps = {
     className?: string
     type?: 'submit' | 'reset' | 'button' | undefined;
     disabled?: boolean | undefined
+    style?: any
 }
 
 
@@ -16,10 +17,12 @@ const Button = ({
     onClick,
     className,
     type,
-    disabled
+    disabled,
+    style
 }: ButtonProps) => {
     return (
         <button
+            style={style}
             disabled={disabled}
             className={className}
             onClick={onClick}

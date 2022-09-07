@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 //
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -19,6 +19,37 @@ const Profile: NextPage = () => {
   const [profileStatus, setProfileStatus] = useState<
     "idle" | "success" | "error" | "loading"
   >("idle");
+
+  const [menuActive, setMenuActive] = useState<{
+    name: string,
+    component: ReactNode
+  } | null>(null)
+
+  const AnswersC = {
+    name: 'answers',
+    component: <ProfileMenuElements elements={profile?.answers} />
+  }
+
+  const QuestionsC = {
+    name: 'questions',
+    component: <ProfileMenuElements elements={profile?.questions} />
+  }
+
+  const onChangeMenu = (name: string) => {
+    setMenuActive((prev: any): any => {
+      if (prev && prev.name === name) {
+        return null
+      }
+      
+      if (name === 'answers') return AnswersC
+
+      if (name === 'questions') return QuestionsC
+    })
+  }
+
+  useEffect(() => {
+    setMenuActive(AnswersC)
+  }, [profile?.answers, profile?.questions])
 
   const router = useRouter();
 
@@ -54,8 +85,11 @@ const Profile: NextPage = () => {
             </div>
             <div className="h-full w-[790px] hidden lg:block">
               <div className="max-w-[630px] mx-auto h-full">
-                <ProfileMenu />
-                <ProfileMenuElements />
+                <ProfileMenu 
+                  menuActive={menuActive}
+                  onChangeMenu={onChangeMenu}
+                />
+                {menuActive?.component}
               </div>
             </div>
           </>
