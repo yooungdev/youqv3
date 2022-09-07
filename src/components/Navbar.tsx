@@ -44,6 +44,22 @@ const Navbar = ({}: any) => {
         </span>
       );
     }
+
+    if (router.pathname === '/ask') {
+      return (
+        <span className="text-center w-full font-nunito font-bold text-[20px]">
+          Задать вопрос
+        </span>
+      )
+    }
+
+    if (router.pathname === '/auth') {
+      return (
+        <span className="text-center w-full font-nunito font-bold text-[20px]">
+          Авторизация
+        </span>
+      )
+    }
   };
 
   const navbarMenu = useMemo(() => {

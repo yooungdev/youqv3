@@ -71,8 +71,8 @@ const Home: NextPage = () => {
     <PageContainer>
       <div className="flex justify-between h-full">
         <div className="h-full w-[100%] pb-[60px] lg:w-[790px]">
-          <SearchByQuestions />
-          <div className="h-full max-w-[630px] mx-auto p-0 sm:pt-[50px]">
+          {/* <SearchByQuestions /> */}
+          <div className="h-full max-w-[630px] mx-auto">
             {questionsLoadingStatus === "loading" && (
               <>
                 <div className="hidden sm:flex flex-col">

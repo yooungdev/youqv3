@@ -38,9 +38,9 @@ const Ask: NextPage = () => {
 
 const AskQuestion = () => {
   return (
-    <div className="shadow-standart mx-auto rounded-[10px] flex flex-col max-w-[800px] bg-white p-[25px]">
+    <div className="shadow-standart mx-auto rounded-[10px] flex flex-col max-w-[800px] bg-white p-[20px]">
       <div>
-        <span className="text-[20px] font-nunito font-bold text-[#232323]">
+        <span className="text-[20px] hidden sm:block font-nunito font-bold text-[#232323]">
           Задайте вопрос
         </span>
       </div>
@@ -105,7 +105,7 @@ const EditAskQuestion = () => {
         placeholder="Напишите свой вопрос (Сделайте его простым и понятным, чтобы получить такой же ответ:))"
       />
       <div className="flex flex-col mt-[15px]">
-        <div className="flex">
+        <div className="flex flex-col sm:flex-row">
           <Select
             className="w-[200px]"
             defaultValue={selectedItem}
@@ -114,7 +114,7 @@ const EditAskQuestion = () => {
             placeholder="Выбери предмет"
           />
           <Select
-            className="ml-[10px] w-auto"
+            className="sm:ml-[10px] mt-[10px] sm:mt-0 w-[200px]"
             defaultValue={selectedClass}
             onChange={setSelectedClass}
             options={newClassesOptions}
@@ -140,9 +140,9 @@ const EditAskQuestion = () => {
               "Задать вопрос"
             )}
           </Button>
-          <div className="flex items-center ml-[20px]">
+          {/* <div className="flex items-center ml-[20px]">
             <FileUpload />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
